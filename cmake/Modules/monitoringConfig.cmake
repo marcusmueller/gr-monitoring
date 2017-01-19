@@ -1,0 +1,30 @@
+INCLUDE(FindPkgConfig)
+PKG_CHECK_MODULES(PC_MONITORING monitoring)
+
+FIND_PATH(
+    MONITORING_INCLUDE_DIRS
+    NAMES monitoring/api.h
+    HINTS $ENV{MONITORING_DIR}/include
+        ${PC_MONITORING_INCLUDEDIR}
+    PATHS ${CMAKE_INSTALL_PREFIX}/include
+          /usr/local/include
+          /usr/include
+)
+
+FIND_LIBRARY(
+    MONITORING_LIBRARIES
+    NAMES gnuradio-monitoring
+    HINTS $ENV{MONITORING_DIR}/lib
+        ${PC_MONITORING_LIBDIR}
+    PATHS ${CMAKE_INSTALL_PREFIX}/lib
+          ${CMAKE_INSTALL_PREFIX}/lib64
+          /usr/local/lib
+          /usr/local/lib64
+          /usr/lib
+          /usr/lib64
+)
+
+INCLUDE(FindPackageHandleStandardArgs)
+FIND_PACKAGE_HANDLE_STANDARD_ARGS(MONITORING DEFAULT_MSG MONITORING_LIBRARIES MONITORING_INCLUDE_DIRS)
+MARK_AS_ADVANCED(MONITORING_LIBRARIES MONITORING_INCLUDE_DIRS)
+
